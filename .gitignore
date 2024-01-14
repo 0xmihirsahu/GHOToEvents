@@ -1,0 +1,20 @@
+# General
+node_modules
+.cache/
+yarn-error.log
+
+# React
+build/
+public/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+#IntelliJ
+.idea/
+
+#MacOS
+**/.DS_Store

@@ -1,0 +1,11 @@
+{
+  "name": "eventsgho",
+  "version": "0.1.0",
+  "repository": "git@github.com:0xmihirsahu/eventsgho.git",
+  "author": "Arthur G. <me@arthurka.eu>, Mihir S. <0xmihirsahu@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
