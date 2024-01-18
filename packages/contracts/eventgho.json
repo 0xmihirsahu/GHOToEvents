@@ -1,0 +1,201 @@
+{
+    "_format": "hh-sol-artifact-1",
+    "contractName": "eventgho",
+    "sourceName": "contracts/eventgho.sol",
+    "abi":[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "eventId",
+				"type": "uint256"
+			}
+		],
+		"name": "checkInToEvent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxCapacity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address[]",
+				"name": "speakers",
+				"type": "address[]"
+			},
+			{
+				"internalType": "string",
+				"name": "websiteLink",
+				"type": "string"
+			}
+		],
+		"name": "createEvent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "createUser",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "depositFunds",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "eventCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "events",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxCapacity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "websiteLink",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "isCancelled",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "makeLoanAndPayWithGHO",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "eventId",
+				"type": "uint256"
+			}
+		],
+		"name": "rsvpToEvent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "users",
+		"outputs": [
+			{
+				"internalType": "enum eventgho.UserType",
+				"name": "userType",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "depositedFee",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+}
