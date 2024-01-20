@@ -18,7 +18,7 @@ const config = createConfig(
 export default function Web3Provider({children}){
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider theme="rounded" mode="auto">
+      <ConnectKitProvider theme="retro" mode="dark">
         {children}
       </ConnectKitProvider>
     </WagmiConfig>
