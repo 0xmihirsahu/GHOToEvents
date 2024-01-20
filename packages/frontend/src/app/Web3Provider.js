@@ -18,7 +18,9 @@ const config = createConfig(
 export default function Web3Provider({children}){
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider theme="retro" mode="dark">
+      <ConnectKitProvider customTheme={{
+        "--ck-font-family" : '"Pixelify Sans"',
+        }} theme="retro" mode="dark">
         {children}
       </ConnectKitProvider>
     </WagmiConfig>
