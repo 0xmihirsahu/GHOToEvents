@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Lottie from "lottie-react";
-import creatingAnimation from "../../../public/assets/creatingAnimation.json";
+import creatingAnimation from "../../public/assets/creatingAnimation.json";
 
 export default function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
@@ -12,7 +12,6 @@ export default function CreateEvent() {
   const [maxCapacity, setMaxCapacity] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [colAmount, setColAmount] = useState("0");
-
 
   const [isCreating, setIsCreating] = useState(false);
   //use setIsCreating inside the contract calls
@@ -35,9 +34,9 @@ export default function CreateEvent() {
     <div className="flex h-screen">
       <form
         onSubmit={handleSubmit}
-        className="w-full mx-60 mt-24 font-pixelify p-4"
+        className="w-full mx-60 mt-24 font-pixelify p-8 bg-zinc-900 h-fit rounded-2xl"
       >
-        <h1 className="font-extrabold text-4xl mb-6 text-rose-200">
+        <h1 className="font-extrabold text-4xl mb-6 text-rose-100">
           Create Your Own Events
         </h1>
         <div className="mb-3">
@@ -166,7 +165,7 @@ export default function CreateEvent() {
         >
           Deposit Collateral & Borrow GHO
         </button>
-        <p className="self-end p-3 justify-self-center align-baseline">{"Optional"}</p>
+        <p className="self-end p-3 justify-self-center align-baseline tracking-wide">{"Optional"}</p>
         </div>
         
         <button
