@@ -21,7 +21,7 @@ export default function Home() {
 					<span className="bg-gradient-to-b from-rose-700 to-indigo-900 via-pink-700 bg-clip-text text-transparent text-5xl font-bold tracking-wider">GHO-To-Events&nbsp; </span>
           </h1>
 					<h1 className="text-5xl font-bold">
-						Management and RSVP'ing Dapp.
+						Management and RSVPing Dapp.
 					</h1>
 					<h4 className="mt-4 text-xl">
 						Create, Participate and Attend Events.
