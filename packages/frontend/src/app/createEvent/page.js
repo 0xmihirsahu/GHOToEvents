@@ -14,7 +14,6 @@ export default function CreateEvent() {
   const [maxCapacity, setMaxCapacity] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [colAmount, setColAmount] = useState("0");
-
   const [isCreating, setIsCreating] = useState(false);
 
   const createEvent = async (event) => {
