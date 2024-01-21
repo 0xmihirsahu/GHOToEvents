@@ -1,13 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
 
 import { ethers } from "ethers";
 import EventContractConfig from "./EventContractConfig";
 import creatingAnimation from "@/public/assets/creatingAnimation.json";
 
-
 export default function CreateEvent() {
+  // function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0");
@@ -16,23 +16,54 @@ export default function CreateEvent() {
   const [maxCapacity, setMaxCapacity] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [colAmount, setColAmount] = useState("0");
+  const [contract, setContract] = useState("");
+  const [account, setAccount] = useState(0);
 
   const [isCreating, setIsCreating] = useState(false);
 
-  const createEvent = async (event) => {
-    event.preventDefault();
-    setIsCreating(true);
+  useEffect(() => {
+    const init = async () => {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
 
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
+      const contractdata = new ethers.Contract(
         EventContractConfig.eventContractAddress,
         EventContractConfig.eventContractAbi,
         signer
       );
 
+      const { ethereum } = window;
+
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      setContract(contractdata);
+      setAccount(accounts[0]);
+      console.log(contractdata);
+      console.log(accounts[0])
+      //  console.log(contractdata);
+    };
+
+    init();
+  }, []);
+
+  const createEvent = async (event) => {
+    event.preventDefault();
+    setIsCreating(true);
+
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
+
+    // const contract = new ethers.Contract(
+    //   EventContractConfig.eventContractAddress,
+    //   EventContractConfig.eventContractAbi,
+    //   signer
+    // );
+    try {
       // Convert the price, maxCapacity, and colAmount to BigNumber if needed
       const priceBN = ethers.utils.parseUnits(price, "wei");
       const maxCapacityBN = ethers.BigNumber.from(maxCapacity);
@@ -229,3 +260,7 @@ export default function CreateEvent() {
     </div>
   );
 }
+
+// export default CreateEvent;
+// return <></>;
+// }
