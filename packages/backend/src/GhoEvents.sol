@@ -72,7 +72,7 @@ contract GhoEvents {
         emit EventCreated(eventId, msg.sender, timestamp, price, maxCapacity);
     }
 
-    function rsvpWithGho(bytes32 eventId) external {
+    function rsvpWithGho(bytes32 eventId) public {
         Event storage myEvent = events[eventId];
         require(
             block.timestamp <= myEvent.timestamp,
@@ -164,7 +164,7 @@ contract GhoEvents {
     function getEvent(
         bytes32 eventId
     )
-        external
+        public
         view
         returns (
             bytes32 id,

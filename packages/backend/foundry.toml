@@ -5,3 +5,4 @@ libs = ['lib']
 
 [rpc_endpoints]
 goerli = "https://rpc.ankr.com/eth_goerli"
+sepolia = "${SEPOLIA_RPC_URL}"

@@ -2,66 +2,105 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "forge-std/StdCheats.sol";
+import "../src/GhoEvents.sol";
 import {IERC20} from "aave-v3-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol";
 import {IPool} from "aave-v3-core/contracts/interfaces/IPool.sol";
 import {GhoToken} from "gho-core/src/contracts/gho/GhoToken.sol";
 import {IGhoToken} from "gho-core/src/contracts/gho/interfaces/IGhoToken.sol";
 
-contract GhoTest is StdCheats, Test {
-    IERC20 dai = IERC20(0xD77b79BE3e85351fF0cbe78f1B58cf8d1064047C);
-    IPool pool = IPool(0x617Cf26407193E32a771264fB5e9b8f09715CdfB);
-    GhoToken gho = GhoToken(0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211);
+contract GhoEventsTest is Test {
+    GhoEvents private ghoEvents;
+    GhoToken private ghoToken;
+    IPool private aavePool;
+    address private organizer = address(0x1);
+    address private attendee = address(0x2);
 
-    address WE = address(0x1);
+    // Addresses for GHO token and Aave pool on Sepolia
+    address private constant GHO_TOKEN_ADDRESS =
+        0xc4bF5CbDaBE595361438F8c6a187bDc330539c60; // GHO token address
+    address private constant AAVE_POOL_ADDRESS =
+        0x6Ae43d3271ff6888e7Fc43Fd7321a503ff738951; // Aave pool address
 
     function setUp() public {
-        vm.createSelectFork(vm.rpcUrl("goerli"), 8818553);
-        // Top up our account with 100 DAI
-        deal(address(dai), WE, 100e18);
-        // Take control of GHO token
-        address owner = gho.owner();
-        vm.prank(owner);
-        gho.transferOwnership(WE);
-        // We start interacting
-        vm.startPrank(WE);
+        vm.createSelectFork(vm.rpcUrl("sepolia"));
+        ghoToken = GhoToken(GHO_TOKEN_ADDRESS);
+        aavePool = IPool(AAVE_POOL_ADDRESS);
+        ghoEvents = new GhoEvents(GHO_TOKEN_ADDRESS, AAVE_POOL_ADDRESS);
+
+        // Set up the initial state
+        // Provide liquidity to Aave pool
+        // Set facilitator in the GHO token contract
     }
 
-    function testMintGho() public {
-        // Approve the Aave Pool to pull DAI funds
-        dai.approve(address(pool), 100e18);
-        // Supply 100 DAI to Aave Pool
-        pool.supply(address(dai), 100e18, WE, 0);
+    function testCreateEvent() public {
+        uint256 eventTimestamp = block.timestamp + 1 days;
+        uint256 eventPrice = 1; // 10 GHO for testing
+        uint256 maxCapacity = 100;
 
-        // Mint 10 GHO (2 for variable interest rate mode)
-        pool.borrow(address(gho), 10e18, 2, 0, WE);
-        assertEq(gho.balanceOf(WE), 10e18);
+        vm.startPrank(organizer);
+        ghoEvents.createEvent(eventTimestamp, eventPrice, maxCapacity);
+        vm.stopPrank();
 
-        // Time flies
-        vm.roll(20);
+        // Get the event details
+        bytes32 eventId = keccak256(
+            abi.encodePacked(
+                organizer,
+                address(ghoEvents),
+                eventTimestamp,
+                eventPrice,
+                maxCapacity
+            )
+        );
+        (bytes32 returnedEventId, , , , , , ) = ghoEvents.getEvent(eventId);
 
-        // We send 10 GHO to a friend
-        address FRIEND = address(0x1234);
-        gho.transfer(FRIEND, 10e18);
-        assertEq(gho.balanceOf(WE), 0);
-        assertEq(gho.balanceOf(FRIEND), 10e18);
+        // Assertions
+        assertEq(returnedEventId, eventId, "Event ID should match");
     }
 
-    function testFacilitator() public {
-        // Add Facilitator
-        gho.addFacilitator(
-            WE,
-            IGhoToken.Facilitator({
-                bucketCapacity: 1_000_000e18, // 1M GHO
-                bucketLevel: 0,
-                label: "WeFacilitator"
-            })
+    function testRSVPWithGho() public {
+        uint256 eventTimestamp = block.timestamp + 1 days;
+        uint256 eventPrice = 10; // 10 GHO for testing
+        uint256 maxCapacity = 100;
+        bytes32 eventId = createTestEvent(
+            eventTimestamp,
+            eventPrice,
+            maxCapacity
         );
 
-        // Mint 10 GHO to a friend
-        address FRIEND = address(0x1234);
-        gho.mint(FRIEND, 10e18);
-        assertEq(gho.balanceOf(WE), 0);
-        assertEq(gho.balanceOf(FRIEND), 10e18);
+        // Attendee gets some GHO tokens (simulate borrowing from Aave or receiving from another source)
+        // ...
+
+        vm.startPrank(attendee);
+        ghoToken.approve(address(ghoEvents), eventPrice);
+        ghoEvents.rsvpWithGho(eventId);
+        vm.stopPrank();
+
+        // Assertions
+        assertEq(
+            ghoToken.balanceOf(attendee),
+            0,
+            "GHO tokens should be transferred to the contract"
+        );
+    }
+
+    // Helper function to create a test event
+    function createTestEvent(
+        uint256 eventTimestamp,
+        uint256 eventPrice,
+        uint256 maxCapacity
+    ) internal returns (bytes32) {
+        vm.startPrank(organizer);
+        ghoEvents.createEvent(eventTimestamp, eventPrice, maxCapacity);
+        vm.stopPrank();
+        return
+            keccak256(
+                abi.encodePacked(
+                    organizer,
+                    address(ghoEvents),
+                    eventTimestamp,
+                    eventPrice,
+                    maxCapacity
+                )
+            );
     }
 }
