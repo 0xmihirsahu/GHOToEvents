@@ -16,9 +16,9 @@ export default function CreateEvent() {
   const [isCreating, setIsCreating] = useState(false);
   //use setIsCreating inside the contract calls
 
-  const handleSubmit = (event) => {
+  const createEvent = (event) => {
     event.preventDefault();
-    // Make the contract calls
+    // Make the contract calls to create event
     console.log({
       eventTitle,
       description,
@@ -30,12 +30,17 @@ export default function CreateEvent() {
     });
   };
 
+  const borrowGHO = (event) => {
+    event.preventDefault();
+    // Make the contract calls to deposit collateral and borrow GHO
+    console.log({
+      colAmount,
+    });
+  };
+
   return (
     <div className="flex h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full mx-60 mt-24 font-pixelify p-8 bg-zinc-900 h-fit rounded-2xl"
-      >
+      <form className="w-full mx-60 mt-24 font-pixelify p-8 bg-zinc-900 h-fit rounded-2xl">
         <h1 className="font-extrabold text-4xl mb-6 text-rose-100">
           Create Your Own Events
         </h1>
@@ -147,8 +152,11 @@ export default function CreateEvent() {
         </div>
 
         <div className="flex flex-row gap-10 mb-4 items-center">
-        <div>
-            <label htmlFor="colAmount" className="block text-lg font-medium mb-2">
+          <div>
+            <label
+              htmlFor="colAmount"
+              className="block text-lg font-medium mb-2"
+            >
               Collateral Amount
             </label>
             <input
@@ -159,17 +167,21 @@ export default function CreateEvent() {
               className="border border-purple-600 bg-zinc-800 rounded-md px-2 py-2 w-60"
             />
           </div>
-        <button
-          type="submit"
-          className="bg-purple-800 self-end text-white px-4 py-2 rounded-md mt-4 border-black border-2 hover:shadow-md hover:shadow-black transition duration-75 active:translate-x-0.5 active:translate-y-0.5"
-        >
-          Deposit Collateral & Borrow GHO
-        </button>
-        <p className="self-end p-3 justify-self-center align-baseline tracking-wide">{"Optional"}</p>
+          <button
+            type="submit"
+            onClick={borrowGHO}
+            className="bg-purple-800 self-end text-white px-4 py-2 rounded-md mt-4 border-black border-2 hover:shadow-md hover:shadow-black transition duration-75 active:translate-x-0.5 active:translate-y-0.5"
+          >
+            Deposit Collateral & Borrow GHO
+          </button>
+          <p className="self-end p-3 justify-self-center align-baseline tracking-wide">
+            {"Optional"}
+          </p>
         </div>
-        
+
         <button
           type="submit"
+          onClick={createEvent}
           className="bg-rose-600 text-white px-4 py-2 rounded-md mt-4 border-black border-2 hover:shadow-md hover:shadow-black transition duration-75 active:translate-x-0.5 active:translate-y-0.5"
         >
           Create Event
