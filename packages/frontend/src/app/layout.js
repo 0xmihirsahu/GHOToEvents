@@ -6,8 +6,8 @@ import NavBar from '@/components/NavBar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'EventsGHO',
-  description: 'Events Dapp',
+  title: 'GHOToEvents',
+  description: 'Events Dapp with GHOs borrow and vault functionality.',
 }
 
 export default function RootLayout({ children }) {
