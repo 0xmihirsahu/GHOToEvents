@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Lottie from "lottie-react";
 import creatingAnimation from "../../public/assets/creatingAnimation.json";
+import { ethers } from "ethers";
+import EventContractConfig from "./EventContractConfig";
 
 export default function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
@@ -14,25 +16,50 @@ export default function CreateEvent() {
   const [colAmount, setColAmount] = useState("0");
 
   const [isCreating, setIsCreating] = useState(false);
-  //use setIsCreating inside the contract calls
 
-  const createEvent = (event) => {
+  const createEvent = async (event) => {
     event.preventDefault();
-    // Make the contract calls to create event
-    console.log({
-      eventTitle,
-      description,
-      price,
-      date,
-      location,
-      maxCapacity,
-      websiteLink,
-    });
+    setIsCreating(true);
+
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+        EventContractConfig.eventContractAddress,
+        EventContractConfig.eventContractAbi,
+        signer
+      );
+
+      // Convert the price, maxCapacity, and colAmount to BigNumber if needed
+      const priceBN = ethers.utils.parseUnits(price, "wei");
+      const maxCapacityBN = ethers.BigNumber.from(maxCapacity);
+      const colAmountBN = ethers.utils.parseUnits(colAmount, "wei");
+
+      // Convert date to Unix timestamp in seconds
+      const dateUnix = Date.parse(date) / 1000;
+
+      await contract.createEvent(
+        eventTitle,
+        description,
+        priceBN,
+        dateUnix,
+        maxCapacityBN,
+        location,
+        websiteLink,
+        colAmountBN
+      );
+
+      console.log("Event created successfully!");
+    } catch (error) {
+      console.error("Error creating event:", error);
+    } finally {
+      setIsCreating(false);
+    }
   };
-
-  const borrowGHO = (event) => {
+  const borrowGHO = async (event) => {
     event.preventDefault();
-    // Make the contract calls to deposit collateral and borrow GHO
+    // Implement borrowing GHO logic here
     console.log({
       colAmount,
     });
