@@ -54,7 +54,8 @@ export default function Events() {
             </div>
           </div>
         </div>
-
+        
+        {/* card component ends here */}
 
       </div>
     </div>
