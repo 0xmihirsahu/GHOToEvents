@@ -1,22 +1,37 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract EventContract {
 
     struct Event {
+        uint eventId;
         string title;
+        address eventOwner;
         string description;
         uint price;
         uint date;
         uint maxCapacity;
         string location;
         string websiteLink;
+        address[] confirmedRSVPs;
         uint collateralAmount;
     }
 
     Event[] public events;
-        event EventCreated(
-    Event indexed _event
-);
+    uint public nextEventId = 1;
+
+    event EventCreated(
+        uint indexed eventId,
+        string title,
+        address indexed eventOwner,
+        string description,
+        uint price,
+        uint date,
+        uint maxCapacity,
+        string location,
+        string websiteLink,
+        uint collateralAmount
+    );
 
     function createEvent(
         string memory _title,
@@ -28,31 +43,43 @@ contract EventContract {
         string memory _websiteLink,
         uint _collateralAmount
     ) public {
-        Event memory newEvent = Event(_title, _description, _price, _date, _maxCapacity, _location, _websiteLink, _collateralAmount);
+        uint newEventId = nextEventId++;
+        Event memory newEvent = Event(
+            newEventId,
+            _title,
+            msg.sender,
+            _description,
+            _price,
+            _date,
+            _maxCapacity,
+            _location,
+            _websiteLink,
+            new address[](0), // Initialize an empty array for confirmedRSVPs
+            _collateralAmount
+        );
+
         events.push(newEvent);
-        emit EventCreated(newEvent);
+        emit EventCreated(
+            newEventId,
+            _title,
+            msg.sender,
+            _description,
+            _price,
+            _date,
+            _maxCapacity,
+            _location,
+            _websiteLink,
+            _collateralAmount
+        );
     }
 
-    function getEvent(uint _eventId) public view returns (
-        string memory,
-        string memory,
-        uint,
-        uint,
-        uint,
-        string memory,
-        string memory,
-        uint
-    ) {
-        Event memory event = events[_eventId];
-        return (
-            event.title,
-            event.description,
-            event.price,
-            event.date,
-            event.maxCapacity,
-            event.location,
-            event.websiteLink,
-            event.collateralAmount
-        );
+    function getEvent(uint _eventId) public view returns (Event memory) {
+        require(_eventId > 0 && _eventId <= events.length, "Event does not exist");
+        return events[_eventId - 1];
+    }
+
+    function getConfirmedRSVPs(uint _eventId) public view returns (address[] memory) {
+        require(_eventId > 0 && _eventId <= events.length, "Event does not exist");
+        return events[_eventId - 1].confirmedRSVPs;
     }
 }
