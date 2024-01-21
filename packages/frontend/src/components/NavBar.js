@@ -5,7 +5,7 @@ import { ConnectKitButton } from "connectkit";
 export default function NavBar() {
     return (
         <div className="absolute w-full text-white z-10 font-pixelify">
-            <nav className="container relative flex flex-wrap justify-between z-10 items-center mx-auto p-4 rounded-xl">
+            <nav className="container relative flex flex-wrap bg-gradient-to-b from-black to-transparent justify-between z-10 items-center mx-auto p-4">
                 <Link href="/" className="font-black text-4xl ml-12 bg-gradient-to-b from-rose-700 to-indigo-900 z-20 via-pink-700 bg-clip-text text-transparent">
                     GHOToEvents
                 </Link>
