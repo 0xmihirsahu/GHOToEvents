@@ -10,7 +10,7 @@ const config = createConfig(
     alchemyId: process.env.ALCHEMY_ID, 
     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID,
     chains,
-    appName: "EventsGHO",
+    appName: "GHOToEvents",
     appDescription: "Events Dapp with GHO and Chainlink",
   }),
 );

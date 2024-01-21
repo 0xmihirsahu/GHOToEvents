@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import Lottie from "lottie-react";
-import creatingAnimation from "../../public/assets/creatingAnimation.json";
+
 import { ethers } from "ethers";
 import EventContractConfig from "./EventContractConfig";
+import creatingAnimation from "@/public/assets/creatingAnimation.json";
+
 
 export default function CreateEvent() {
   const [eventTitle, setEventTitle] = useState("");
